@@ -16,6 +16,9 @@ public class CsvDataService {
 
     public void importDataFromCsv(String filePath) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            // Пропустим первую строку (заголовок)
+            br.readLine();
+
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");

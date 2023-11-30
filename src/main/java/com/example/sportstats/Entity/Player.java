@@ -19,11 +19,11 @@ public class Player {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "details_id", referencedColumnName = "id")
-    private PlayerDetails details;
+    private PlayerDetails details = new PlayerDetails();;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "info_id", referencedColumnName = "id")
-    private PlayerInfo info;
+    private PlayerInfo info = new PlayerInfo();
 
     // Геттеры и сеттеры
     public void setName(String name) {
