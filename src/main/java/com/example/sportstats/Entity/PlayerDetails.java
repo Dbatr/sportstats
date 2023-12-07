@@ -29,5 +29,8 @@ public class PlayerDetails {
     @Column(name = "age")
     private double age;
 
+    @OneToOne
+    @JoinColumn(name = "info_id")
+    private PlayerInfo info;
     // Геттеры и сеттеры
 }

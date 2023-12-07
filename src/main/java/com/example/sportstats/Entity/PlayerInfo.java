@@ -23,5 +23,9 @@ public class PlayerInfo {
     @Column(name = "position")
     private String position;
 
+    @OneToOne(mappedBy = "info")
+    private PlayerDetails details;
+
+
     // Геттеры и сеттеры
 }

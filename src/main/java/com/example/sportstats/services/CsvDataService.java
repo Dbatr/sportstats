@@ -1,7 +1,9 @@
 package com.example.sportstats.services;
 
-import com.example.sportstats.Entity.Player;
-import com.example.sportstats.repositories.PlayerRepository;
+import com.example.sportstats.Entity.PlayerDetails;
+import com.example.sportstats.Entity.PlayerInfo;
+import com.example.sportstats.repositories.PlayerDetailsRepository;
+import com.example.sportstats.repositories.PlayerInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,10 @@ import java.io.IOException;
 @Service
 public class CsvDataService {
     @Autowired
-    private PlayerRepository playerRepository;
+    private PlayerDetailsRepository playerDetailsRepository;
+
+    @Autowired
+    private PlayerInfoRepository playerInfoRepository;
 
     public void importDataFromCsv(String filePath) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -23,15 +28,22 @@ public class CsvDataService {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
 
-                Player player = new Player();
-                player.setName(data[0]);
-                player.setTeam(data[1].replaceAll("\"", "").trim());
-                player.setPosition(data[2].replaceAll("\"", ""));
-                player.setHeight(Integer.parseInt(data[3]));
-                player.setWeight(Integer.parseInt(data[4]));
-                player.setAge(Double.parseDouble(data[5]));
+                PlayerDetails playerDetails = new PlayerDetails();
+                playerDetails.setName(data[0]);
+                playerDetails.setHeight(Integer.parseInt(data[3]));
+                playerDetails.setWeight(Integer.parseInt(data[4]));
+                playerDetails.setAge(Double.parseDouble(data[5]));
 
-                playerRepository.save(player);
+                PlayerInfo playerInfo = new PlayerInfo();
+                playerInfo.setTeam(data[1].replaceAll("\"", "").trim());
+                playerInfo.setPosition(data[2].replaceAll("\"", ""));
+
+                playerDetails.setInfo(playerInfo);
+
+                // Сохраняем PlayerDetails и PlayerInfo
+                playerInfoRepository.save(playerInfo);
+                playerDetailsRepository.save(playerDetails);
+
             }
         }
     }
