@@ -26,6 +26,10 @@ public class PlayerInfo {
     @OneToOne(mappedBy = "info")
     private PlayerDetails details;
 
-
-    // Геттеры и сеттеры
+    public String getName() {
+        return details.getName();
+    }
+    public int getHeight() {
+        return details.getHeight();
+    }
 }
