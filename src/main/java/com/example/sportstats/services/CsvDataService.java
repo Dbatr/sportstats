@@ -20,30 +20,42 @@ public class CsvDataService {
     private PlayerInfoRepository playerInfoRepository;
 
     public void importDataFromCsv(String filePath) throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            // Пропустим первую строку (заголовок)
-            br.readLine();
+        // Проверяем, есть ли уже записи в базе данных
+        if (playerInfoRepository.count() > 0 && playerDetailsRepository.count() > 0) {
+            System.out.println("""
 
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
 
-                PlayerDetails playerDetails = new PlayerDetails();
-                playerDetails.setName(data[0]);
-                playerDetails.setHeight(Integer.parseInt(data[3]));
-                playerDetails.setWeight(Integer.parseInt(data[4]));
-                playerDetails.setAge(Double.parseDouble(data[5]));
+                    База данных не пуста. Новые данные не добавлены.
 
-                PlayerInfo playerInfo = new PlayerInfo();
-                playerInfo.setTeam(data[1].replaceAll("\"", "").trim());
-                playerInfo.setPosition(data[2].replaceAll("\"", ""));
 
-                playerDetails.setInfo(playerInfo);
+                    """);
+        }
+        else {
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                // Пропустим первую строку (заголовок)
+                br.readLine();
 
-                // Сохраняем PlayerDetails и PlayerInfo
-                playerInfoRepository.save(playerInfo);
-                playerDetailsRepository.save(playerDetails);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] data = line.split(",");
 
+                    PlayerDetails playerDetails = new PlayerDetails();
+                    playerDetails.setName(data[0]);
+                    playerDetails.setHeight(Integer.parseInt(data[3]));
+                    playerDetails.setWeight(Integer.parseInt(data[4]));
+                    playerDetails.setAge(Double.parseDouble(data[5]));
+
+                    PlayerInfo playerInfo = new PlayerInfo();
+                    playerInfo.setTeam(data[1].replaceAll("\"", "").trim());
+                    playerInfo.setPosition(data[2].replaceAll("\"", ""));
+
+                    playerDetails.setInfo(playerInfo);
+
+                    // Сохраняем PlayerDetails и PlayerInfo
+                    playerInfoRepository.save(playerInfo);
+                    playerDetailsRepository.save(playerDetails);
+
+                }
             }
         }
     }

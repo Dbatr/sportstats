@@ -34,5 +34,7 @@ public class SportstatsApplication implements CommandLineRunner {
 		if (teamWithHighestAverageHeight != null) {
 			playerStatsService.printTop5TallestPlayers(teamWithHighestAverageHeight);
 		}
+
+		playerStatsService.findTeamWithHighestAverageAgeInRange();
 	}
 }
