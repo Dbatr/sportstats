@@ -29,7 +29,11 @@ public class SportstatsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws IOException {
-		String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("performance_teams.csv")).getPath();
+		String filePath = Objects.requireNonNull(getClass()
+												.getClassLoader()
+												.getResource("performance_teams.csv"))
+												.getPath();
+
 		csvDataService.importDataFromCsv(filePath);
 
 		// Находим команду с самым высоким средним ростом
