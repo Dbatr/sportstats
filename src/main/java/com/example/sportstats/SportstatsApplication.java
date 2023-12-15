@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @SpringBootApplication
 public class SportstatsApplication implements CommandLineRunner {
@@ -28,7 +29,7 @@ public class SportstatsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws IOException {
-		String filePath = "C:\\Users\\Lenovo\\Desktop\\sportstats\\src\\main\\resources\\performance_teams.csv";
+		String filePath = Objects.requireNonNull(getClass().getClassLoader().getResource("performance_teams.csv")).getPath();
 		csvDataService.importDataFromCsv(filePath);
 
 		// Находим команду с самым высоким средним ростом
