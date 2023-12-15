@@ -1,26 +1,12 @@
 package com.example.sportstats.services;
 import com.example.sportstats.Entity.PlayerInfo;
 import com.example.sportstats.repositories.PlayerInfoRepository;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartUtils;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.List;
+
 @Service
 public class PlayerStatsService {
 
@@ -102,45 +88,4 @@ public class PlayerStatsService {
 //            System.out.println("-------------");
 //        }
     }
-
-    public void generateAgeChart() {
-        List<Object[]> teamList = playerInfoRepository.findTeamAverageAge();
-
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-        for (Object[] team : teamList) {
-            String teamName = (String) team[0];
-            double averageAge = (Double) team[1];
-
-            dataset.addValue(averageAge, "Teams", teamName);
-        }
-
-        JFreeChart barChart = ChartFactory.createBarChart(
-                "Average Age in Teams",
-                "Teams",
-                "Average Age",
-                dataset
-        );
-
-        // Увеличение точности значений на оси Y
-        CategoryPlot plot = barChart.getCategoryPlot();
-        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
-
-        // Установка начального значения оси Y на 25
-        yAxis.setLowerBound(25);
-
-        // Установка формата чисел
-        yAxis.setNumberFormatOverride(new DecimalFormat("#.##"));
-
-
-        try {
-            ChartUtils.saveChartAsJPEG(new File("average_ages.jpg"), barChart, 600, 800);
-            System.out.println("График успешно сохранен в файл average_ages.jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
 }

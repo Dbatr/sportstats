@@ -1,6 +1,7 @@
 package com.example.sportstats;
 
 import com.example.sportstats.services.CsvDataService;
+import com.example.sportstats.services.PlayerGraphicsService;
 import com.example.sportstats.services.PlayerStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +18,9 @@ public class SportstatsApplication implements CommandLineRunner {
 
 	@Autowired
 	private PlayerStatsService playerStatsService;
+
+	@Autowired
+	private PlayerGraphicsService playerGraphicsService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SportstatsApplication.class, args);
@@ -38,8 +42,8 @@ public class SportstatsApplication implements CommandLineRunner {
 		playerStatsService.findTeamWithHighestAverageAgeInRange();
 
 		// Генерируем и сохраняем график среднего возраста в командах
-		playerStatsService.generateAgeChart();
-
+		playerGraphicsService.generateAgeChart();
+		playerGraphicsService.generateAgePieChart();
 
 		System.exit(0);
 	}
