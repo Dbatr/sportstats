@@ -27,4 +27,10 @@ public interface PlayerInfoRepository extends JpaRepository<PlayerInfo, Long> {
             "HAVING AVG(d.height) BETWEEN 74 AND 78 AND AVG(d.weight) BETWEEN 190 AND 210" +
             " ORDER BY AVG(d.age) DESC")
     List<Object[]> findTeamWithHighestAverageAgeInRange();
+
+    @Query("SELECT p.team, AVG(d.age)" +
+            " FROM PlayerInfo p JOIN p.details d" +
+            " GROUP BY p.team " +
+            "ORDER BY AVG(d.age) DESC")
+    List<Object[]> findTeamAverageAge();
 }

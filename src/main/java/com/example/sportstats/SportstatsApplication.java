@@ -36,5 +36,11 @@ public class SportstatsApplication implements CommandLineRunner {
 		}
 
 		playerStatsService.findTeamWithHighestAverageAgeInRange();
+
+		// Генерируем и сохраняем график среднего возраста в командах
+		playerStatsService.generateAgeChart();
+
+
+		System.exit(0);
 	}
 }
