@@ -54,7 +54,7 @@ public class PlayerGraphicsService {
 
 
         try {
-            ChartUtils.saveChartAsJPEG(new File("average_ages.jpg"), barChart, 600, 800);
+            ChartUtils.saveChartAsJPEG(new File("graphics/average_ages.jpg"), barChart, 600, 800);
             System.out.println("График успешно сохранен в файл average_ages.jpg");
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,7 +86,7 @@ public class PlayerGraphicsService {
         plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} - {1} ({2})"));
 
         try {
-            ChartUtils.saveChartAsJPEG(new File("average_ages_pie.jpg"), pieChart, 600, 800);
+            ChartUtils.saveChartAsJPEG(new File("graphics/average_ages_pie.jpg"), pieChart, 600, 800);
             System.out.println("Круговая диаграмма успешно сохранена в файл average_ages_pie.jpg");
         } catch (IOException e) {
             e.printStackTrace();

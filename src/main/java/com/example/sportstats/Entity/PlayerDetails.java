@@ -1,6 +1,5 @@
 package com.example.sportstats.Entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,5 +31,4 @@ public class PlayerDetails {
     @OneToOne
     @JoinColumn(name = "info_id")
     private PlayerInfo info;
-    // Геттеры и сеттеры
 }
