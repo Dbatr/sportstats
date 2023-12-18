@@ -19,7 +19,13 @@ public class CsvDataService {
     @Autowired
     private PlayerInfoRepository playerInfoRepository;
 
-    public void importDataFromCsv(String filePath) throws IOException {
+    /**
+     * Импортирует данные из CSV-файла и сохраняет их в базе данных.
+     *
+     * @param filePath Путь к CSV-файлу.
+     */
+    public void importDataFromCsv(String filePath) {
+
         // Проверяем, есть ли уже записи в базе данных
         if (playerInfoRepository.count() > 0 && playerDetailsRepository.count() > 0) {
             System.out.println("""
@@ -37,25 +43,33 @@ public class CsvDataService {
 
                 String line;
                 while ((line = br.readLine()) != null) {
-                    String[] data = line.split(",");
+                    try {
+                        String[] data = line.split(",");
 
-                    PlayerDetails playerDetails = new PlayerDetails();
-                    playerDetails.setName(data[0]);
-                    playerDetails.setHeight(Integer.parseInt(data[3]));
-                    playerDetails.setWeight(Integer.parseInt(data[4]));
-                    playerDetails.setAge(Double.parseDouble(data[5]));
+                        PlayerDetails playerDetails = new PlayerDetails();
+                        playerDetails.setName(data[0]);
+                        playerDetails.setHeight(Integer.parseInt(data[3]));
+                        playerDetails.setWeight(Integer.parseInt(data[4]));
+                        playerDetails.setAge(Double.parseDouble(data[5]));
 
-                    PlayerInfo playerInfo = new PlayerInfo();
-                    playerInfo.setTeam(data[1].replaceAll("\"", "").trim());
-                    playerInfo.setPosition(data[2].replaceAll("\"", ""));
+                        PlayerInfo playerInfo = new PlayerInfo();
+                        playerInfo.setTeam(data[1].replaceAll("\"", "").trim());
+                        playerInfo.setPosition(data[2].replaceAll("\"", ""));
 
-                    playerDetails.setInfo(playerInfo);
+                        playerDetails.setInfo(playerInfo);
 
-                    // Сохраняем PlayerDetails и PlayerInfo
-                    playerInfoRepository.save(playerInfo);
-                    playerDetailsRepository.save(playerDetails);
+                        // Сохраняем PlayerDetails и PlayerInfo
+                        playerInfoRepository.save(playerInfo);
+                        playerDetailsRepository.save(playerDetails);
 
+                    } catch (NumberFormatException e) {
+                        // Логирование ошибки или обработка исключения при парсинге чисел
+                        System.err.println("Ошибка при парсинге чисел из CSV: " + e.getMessage());
+                    }
                 }
+            } catch (IOException e) {
+                // Логирование ошибки или обработка исключения ввода-вывода
+                System.err.println("Ошибка при чтении файла CSV: " + e.getMessage());
             }
         }
     }

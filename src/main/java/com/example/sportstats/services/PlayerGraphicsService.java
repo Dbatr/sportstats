@@ -23,7 +23,12 @@ public class PlayerGraphicsService {
     @Autowired
     private PlayerInfoRepository playerInfoRepository;
 
-    public void generateAgeChart() {
+    /**
+     * Генерирует столбчатую диаграмму среднего возраста в командах и сохраняет ее в файл.
+     *
+     * @throws IOException при ошибках ввода-вывода
+     */
+    public void generateAgeChart() throws IOException {
         List<Object[]> teamList = playerInfoRepository.findTeamAverageAge();
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -52,24 +57,27 @@ public class PlayerGraphicsService {
         // Установка формата чисел
         yAxis.setNumberFormatOverride(new DecimalFormat("#.##"));
 
-
         try {
             ChartUtils.saveChartAsJPEG(new File("graphics/average_ages.jpg"), barChart, 600, 800);
             System.out.println("График успешно сохранен в файл average_ages.jpg");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при сохранении графика в файл: " + e.getMessage());
+            throw e;
         }
     }
 
-    public void generateAgePieChart() {
+    /**
+     * Генерирует круговую диаграмму распределения среднего возраста в командах и сохраняет ее в файл.
+     *
+     * @throws IOException при ошибках ввода-вывода
+     */
+    public void generateAgePieChart() throws IOException {
         List<Object[]> teamList = playerInfoRepository.findTeamAverageAge();
-
         DefaultPieDataset dataset = new DefaultPieDataset();
 
         for (Object[] team : teamList) {
             String teamName = (String) team[0];
             double averageAge = (Double) team[1];
-
             dataset.setValue(teamName, averageAge);
         }
 
@@ -89,7 +97,8 @@ public class PlayerGraphicsService {
             ChartUtils.saveChartAsJPEG(new File("graphics/average_ages_pie.jpg"), pieChart, 600, 800);
             System.out.println("Круговая диаграмма успешно сохранена в файл average_ages_pie.jpg");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при сохранении круговой диаграммы в файл: " + e.getMessage());
+            throw e;
         }
     }
 }

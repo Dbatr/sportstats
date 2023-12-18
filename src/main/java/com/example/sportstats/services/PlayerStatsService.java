@@ -13,6 +13,11 @@ public class PlayerStatsService {
     @Autowired
     private PlayerInfoRepository playerInfoRepository;
 
+    /**
+     * Находит команду с самым высоким средним ростом.
+     *
+     * @return Название команды с самым высоким средним ростом или null, если список пуст.
+     */
     public String findTeamWithHighestAverageHeight() {
         List<Object[]> teamAverageHeightList = playerInfoRepository.findTeamAverageHeight();
         if (teamAverageHeightList.isEmpty()) {
@@ -25,11 +30,16 @@ public class PlayerStatsService {
 
         System.out.println("-------------");
         System.out.println("-------------");
-        System.out.println("Team with highest average height: " + teamName +
-                            " (Average Height: " + averageHeight + ")"+"\n"+"\n");
+        System.out.println("Команда с самым высоким средним ростом: " + teamName +
+                            " (Средний рост: " + averageHeight + ")"+"\n"+"\n");
         return teamName;
     }
 
+    /**
+     * Выводит 5 самых высоких игроков для указанной команды.
+     *
+     * @param teamName Название команды.
+     */
     public void printTop5TallestPlayers(String teamName) {
         // Создаем объект Pageable для вывода 5 элементов
         Pageable pageable = PageRequest.of(0, 5);
@@ -40,14 +50,18 @@ public class PlayerStatsService {
         } else {
             System.out.println("-------------");
             System.out.println("-------------");
-            System.out.println("Top 5 tallest players from team " + teamName + ":");
+            System.out.println("5 самых высоких игроков из команды " + teamName + ":");
             for (PlayerInfo player : top5TallestPlayers) {
-                System.out.println(player.getName() + " - Height: " + player.getHeight());
+                System.out.println(player.getName() + " - Его рост: " + player.getHeight() + " inches");
             }
             System.out.println("\n"+"\n");
         }
     }
 
+    /**
+     * Находит команду с самым высоким средним возрастом, где средний рост от 74 до 78 inches
+     * и средний вес от 190 до 210 lbs.
+     */
     public void findTeamWithHighestAverageAgeInRange() {
         List<Object[]> teamList = playerInfoRepository.findTeamWithHighestAverageAgeInRange();
 
@@ -69,23 +83,5 @@ public class PlayerStatsService {
             System.out.println("Средний возраст команды: " + averageAge);
             System.out.println("\n"+"\n");
         }
-
-        //Здесь можно посмотреть весь список:
-//        System.out.println("Список команд согласно заданным критериям:");
-//        for (Object[] team : teamList) {
-//            String teamName = (String) team[0];
-//            double averageHeight = (Double) team[1];
-//            double averageWeight = (Double) team[2];
-//            double averageAge = (Double) team[3];
-//
-//            System.out.println("-------------");
-//            System.out.println("-------------");
-//            System.out.println("Название команды: " + teamName);
-//            System.out.println("Средний рост команды: " + averageHeight);
-//            System.out.println("Средний вес команды: " + averageWeight);
-//            System.out.println("Средний возраст команды: " + averageAge);
-//            System.out.println("-------------");
-//            System.out.println("-------------");
-//        }
     }
 }
